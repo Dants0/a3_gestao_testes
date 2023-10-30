@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 class User {
   constructor(email, password, confirmedPassword) {
     this.email = email;
@@ -14,12 +12,16 @@ class User {
         password: this.password,
         confirmedPassword: this.confirmedPassword,
       };
-      fs.writeFileSync('./db/users.json', JSON.stringify(data, null, 2), 'utf8');
+ 
+      if(data.email && data.password && data.confirmedPassword == undefined || null){
+        throw new Error ("Couldn't create because have a missing information")
+      }else{
+        return "Register successfully";
+      }
     }catch(e){
       throw new Error ("Couldn't create user" + e);
     }
   }
 }
 
-const user = new User("John", 123, 123);
-user.createUser();
+module.exports = User;
